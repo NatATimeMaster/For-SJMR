@@ -1,0 +1,432 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Dancing+Script&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Quicksand', sans-serif;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      overflow-x: hidden;
+      overflow-y: auto;
+      position: relative;
+      transition: background 1s ease;
+    }
+    .instruction {
+      margin-top: 30px;
+      font-size: 24px;
+    }
+    .circle {
+      margin-top: 40px;
+      width: 200px;
+      height: 200px;
+      background: red;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .message-box {
+      margin: 30px auto 10px;
+      background: #fff9d9;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 700px;
+      font-size: 18px;
+      line-height: 1.6;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-height: 300px;
+      overflow-y: auto;
+      z-index: 2;
+    }
+    .input-box {
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(-100px);
+      transition: opacity 1s ease, transform 1s ease;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+    }
+    .input-box.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .input-box input {
+      padding: 10px;
+      font-size: 16px;
+      width: 250px;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .final-message {
+      font-family: 'Dancing Script', cursive;
+      font-size: 22px;
+      text-align: center;
+      padding: 30px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 80vh;
+      overflow-y: auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 10px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      cursor: pointer;
+    }
+    .highlight {
+      color: #ff4f4f;
+      font-weight: bold;
+      text-shadow: 0 0 10px #ffd700;
+      cursor: pointer;
+    }
+    .heart-rain {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .heart-drop {
+      position: absolute;
+      color: #ff4f4f;
+      font-size: 28px;
+      opacity: 0.6;
+      animation: fall 3s linear forwards;
+    }
+    @keyframes fall {
+      0% { transform: translateY(-100px); opacity: 0.6; }
+      100% { transform: translateY(100vh); opacity: 0.6; }
+    }
+    .white-heart {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      font-size: 50px;
+      opacity: 1;
+      z-index: 999;
+      transition: transform 1s ease, opacity 1s ease;
+      pointer-events: none;
+    }
+    .white-heart.show {
+      transform: translate(-50%, -50%) scale(20);
+      opacity: 0;
+    }
+    .kiss-impact {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+    .kiss {
+      position: absolute;
+      font-size: 36px;
+      animation: pop 0.3s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+.slideshow-heart {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  height: 300px;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  pointer-events: none;
+}
+.heart-frame {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.heart-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 32px;
+  font-weight: bold;
+  color: #fff;
+  font-family: 'Dancing Script', cursive;
+  animation: fadeText 2s ease forwards;
+  z-index: 2;
+
+  text-shadow: 2px 2px 4px #000, 0 0 8px #ffd700;
+}
+.heart-image {
+  position: absolute;
+  top: 10%;
+  left: 10%;
+  width: 80%;
+  height: 80%;
+  object-fit: cover;
+  clip-path: url(#heartClip);
+  z-index: 1;
+  border-radius: 50%;
+}
+@keyframes fadeText {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.birthday-spark {
+  position: fixed;
+  top: 50%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  font-size: 36px;
+  font-weight: bold;
+  font-family: 'Dancing Script', cursive;
+  color: #fff;
+  animation: sparkle 3s ease forwards;
+  z-index: 999;
+  text-align: center;
+
+  text-shadow: 2px 2px 4px #000, 0 0 10px gold;
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(1); }
+  10% { opacity: 1; transform: scale(1.2); }
+  90% { opacity: 1; transform: scale(1); }
+}
+    .heart-image[src=""] {
+  display: none;
+}
+
+  </style>
+</head>
+<body>
+  <div class="instruction" id="instruction">Click the circle to start</div>
+  <div class="circle" id="circle">Tap me</div>
+  <div class="message-box hidden" id="messageBox">
+    Hii tephanieee🧡<br>
+    HAPPY HAPPY 16th Birthday ✨<br><br>
+Alam kong hindi madali na abutin yung 16years but look! It's your sweet 16th birthday now.. pakahappy ka lang always sa buhay mo okay? And wag ka laging mag iisip ng negative.. Gaya ng sinasabi ko sayo always, think positive lang always and isipin mo lagi yung good side ng mga nangyayari sa buhay mo. Wag pakastress ha , be strong enough na labanan yun para di ka madepress. Ipagpatuloy mo yung kasipagan mo sa pag aaral and always try your best but wag ipush ang sarili sa limit para makapagpatuloy pa. Higit sa lahat patuloy ka pa sa kasiglahan sa tungkulin mo at laging manalangin sa Diyos.
+Sana maging masaya ka sa araw na to.
+Basta if may problem ka I will always be here handang makinig okay?
+I will always be your bestfriend/kuya .
+    <br><br>From: Kuya Nath
+  </div>
+  <div class="input-box" id="inputBox">
+    <input type="password" id="nickname" placeholder="Type the nickname I gave to you...">
+  </div>
+  <div class="final-message hidden" id="finalMessage">
+    Hii tephieee , my love🧡<br>
+    HAPPY HAPPY 16th Birthday ✨<br>
+    Hello sa baby ko na 16years old hahaha<br><br>
+    Gaya ng sabi ko sayo kanina, I will always be here for you okay?<br>
+    Iingatan kita lagi, at hindi kita hahayaang bumagsak..<br>
+    lagi akong nandito sa tabi mo and tutulungan ka sa lahat ng bagay as long as kaya ko.<br><br>
+   I promised na aantayin kita.<br>
+    <span class="highlight" id="love">I LOVE YOU</span><br>
+    And I promise sabay tayong magsusuccess sa future , magiging magkasama tayo sa lahat ng bagay.<br><br>
+    Pasensiya na if wala ako magift sayo this time.<br>
+    Siguro sarili ko nalang iregalo ko? hehe<br><br>
+    Again, Happy happy birthday tephieee. Mwah 💋<br>
+    Happy birthday my loveee🧡<br>
+    From Your Future Groom: <br>
+    <span class="highlight" id="nathan">Nathan</span> 🤍
+  </div>
+  <div class="heart-rain" id="heartRain"></div>
+  <div class="white-heart" id="whiteHeart">🤍</div>
+  <div class="kiss-impact hidden" id="kissImpact"></div>
+<div class="slideshow-heart hidden" id="slideshowHeart">
+  <div class="heart-frame" id="heartFrame">
+    <div class="heart-text" id="heartText">HAPPY</div>
+    <img src="" id="heartImage" class="heart-image hidden"> 
+  </div>
+</div>
+<div class="birthday-spark hidden" id="birthdaySpark">BIRTHDAY ✨</div>
+  
+  <script>
+  const circle = document.getElementById('circle');
+  const instruction = document.getElementById('instruction');
+  const messageBox = document.getElementById('messageBox');
+  const inputBox = document.getElementById('inputBox');
+  const input = document.getElementById('nickname');
+  const finalMessage = document.getElementById('finalMessage');
+  const love = document.getElementById('love');
+  const heartRain = document.getElementById('heartRain');
+  const whiteHeart = document.getElementById('whiteHeart');
+  const nathan = document.getElementById('nathan');
+  const kissImpact = document.getElementById('kissImpact');
+
+  let rowCount = 0;
+  let tapCount = 0;
+  let lastTap = 0;
+
+  circle.addEventListener('click', () => {
+    instruction.classList.add('hidden');
+    circle.classList.add('hidden');
+    messageBox.classList.remove('hidden');
+    inputBox.classList.add('show');
+  });
+
+  messageBox.addEventListener('click', () => {
+    messageBox.classList.add('hidden');
+    inputBox.classList.remove('show');
+    inputBox.classList.remove('hidden');
+    circle.classList.remove('hidden');
+    instruction.classList.remove('hidden');
+  });
+
+  input.addEventListener('input', () => {
+  if (input.value.toLowerCase() === 'tephieee') {
+    document.body.style.background = 'linear-gradient(to bottom right, #ffa500, #ff7f50)';
+    messageBox.classList.add('hidden');
+    inputBox.classList.remove('show');
+    inputBox.classList.add('hidden');
+    finalMessage.classList.remove('hidden');
+
+    // ✅ Start heart rain ONLY when second page shows
+    let hearts = 0;
+    const rainInterval = setInterval(() => {
+      const heart = document.createElement('div');
+      heart.className = 'heart-drop';
+      heart.innerText = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = '0px';
+      heartRain.appendChild(heart);
+      hearts++;
+      if (hearts >= 999) clearInterval(rainInterval); // optional
+    }, 150);
+  }
+});
+
+  love.addEventListener('click', () => {
+  const heartContainer = document.getElementById('slideshowHeart');
+  const heartText = document.getElementById('heartText');
+  const heartImage = document.getElementById('heartImage');
+  const birthdaySpark = document.getElementById('birthdaySpark');
+
+  const images = [
+  'https://i.postimg.cc/gkN90p0x/1746372893946.jpg',
+  'https://i.postimg.cc/LsgGvZ3P/63928d31-c3e9-4fc3-839a-54a5b4ca732aphoto.jpg',
+  'https://i.postimg.cc/cC0jsky7/1741845344060.jpg',
+  'https://i.postimg.cc/brg5d0p7/1742531429233.jpg',
+  'https://i.postimg.cc/GmHfhsNf/1744873492060.jpg',
+  'https://i.postimg.cc/cHNkmkHq/1746375547286.jpg',
+  'https://i.postimg.cc/FsfbYgr0/Messenger-creation-3726-D2-B5-4-E7-C-4-F3-E-ABD0-931-B4-E463797.jpg',
+  'https://i.postimg.cc/Mpqy9k0m/Messenger-creation-25-B7-C935-2-ECA-4751-882-E-F9-E1312-F46-B8.jpg',
+  'https://i.postimg.cc/cHp3YP4Y/Messenger-creation-E3-AC82-B1-D91-D-442-F-BECD-DA097-E58-B121.jpg',
+  'https://i.postimg.cc/1XDqKMfd/Messenger-creation-99-A5683-B-CA4-A-4587-80-CE-7-B4-BD9-E61730.jpg',
+  'https://i.postimg.cc/dVNLrg51/Messenger-creation-5-EA1-CACA-D127-486-A-BDD5-13-AD92090-E76.jpg',
+  'https://i.postimg.cc/4yGdXGx8/Messenger-creation-447-F797-D-8376-4541-866-C-C7-CCE52-A8321.jpg',
+  'https://i.postimg.cc/SxRKSDmp/Messenger-creation-1-E617-D2-E-5164-40-FC-AD8-A-129-F7343009-B.jpg',
+  'https://i.postimg.cc/wM96SkwZ/1719823736972.jpg',
+  'https://i.postimg.cc/PfMf1Bxj/att-3q-At-Nlj-Cr-F6t6-XP6tu8-HCc-Ni-Qw-E-TIvn-Ep-JWDbs-Dbs-A.jpg',
+  'https://i.postimg.cc/xT42RYVW/1750126820069.jpg'
+];
+
+  let index = 0;
+
+  // Reset
+  heartContainer.classList.remove('hidden');
+  heartText.textContent = 'HAPPY';
+  heartText.style.animation = 'fadeText 2s ease forwards';
+  heartImage.classList.add('hidden');
+  birthdaySpark.classList.add('hidden');
+
+  setTimeout(() => {
+  heartText.style.display = 'none';
+  heartImage.classList.remove('hidden');
+
+  const interval = setInterval(() => {
+    if (index >= images.length) {
+      clearInterval(interval);
+      heartImage.classList.add('hidden');
+      heartText.style.display = 'block';
+      heartText.textContent = '16TH';
+      heartText.style.animation = 'fadeText 2s ease forwards';
+
+      setTimeout(() => {
+        heartContainer.classList.add('hidden');
+        birthdaySpark.classList.remove('hidden');
+        setTimeout(() => {
+          birthdaySpark.classList.add('hidden');
+        }, 3000);
+      }, 2000);
+      return;
+    }
+
+    heartImage.src = images[index++];
+    heartImage.style.display = 'block'; // ✅ This makes sure it's visible now
+  }, 750);
+}, 2000);
+  });
+
+
+  // ✨ Fixed: Show white heart on "Nathan" click
+  nathan.addEventListener('click', () => {
+    whiteHeart.classList.remove('show'); // Reset in case it's still animating
+    void whiteHeart.offsetWidth; // Force reflow for animation restart
+    whiteHeart.classList.add('show');
+    setTimeout(() => {
+      whiteHeart.classList.remove('show');
+    }, 1200); // Hide after animation
+  });
+
+  // ✨ Updated: Triple-tap to trigger kiss effect, auto-hide after 3 seconds
+  finalMessage.addEventListener('click', () => {
+    const now = Date.now();
+    if (now - lastTap < 600) {
+      tapCount++;
+    } else {
+      tapCount = 1;
+    }
+    lastTap = now;
+
+    if (tapCount >= 3) {
+      tapCount = 0;
+      kissImpact.classList.remove('hidden');
+      kissImpact.innerHTML = '';
+      for (let i = 0; i < 50; i++) {
+        const kiss = document.createElement('div');
+        kiss.className = 'kiss';
+        kiss.innerText = '💋';
+        kiss.style.left = Math.random() * 100 + 'vw';
+        kiss.style.top = Math.random() * 100 + 'vh';
+        kissImpact.appendChild(kiss);
+      }
+
+      // Auto-hide kiss effect after 3 seconds
+      setTimeout(() => {
+        kissImpact.classList.add('hidden');
+        kissImpact.innerHTML = '';
+      }, 3000);
+    }
+  });
+
+  kissImpact.addEventListener('click', () => {
+    kissImpact.classList.add('hidden');
+    kissImpact.innerHTML = '';
+  });
+</script>
+</body>
+</html>
